@@ -33,13 +33,13 @@ public class Project2 {
 		{
 			if(userChar.equalsIgnoreCase("X"))
 			{
-				playingChar = "O";
-				computerChar = "X";
+				playingChar = "X";
+				computerChar = "O";
 			}
 			else if(userChar.equalsIgnoreCase("O"))
 			{
-				playingChar = "X";
-				computerChar = "O";
+				playingChar = "O";
+				computerChar = "X";
 			}
 			else
 			{
