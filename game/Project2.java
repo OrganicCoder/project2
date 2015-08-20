@@ -19,7 +19,10 @@ public class Project2
 		};
 
 		//display table
-	//	displayTable(table);
+		displayTable(table);
+
+		//Welcome message
+		System.out.println("\nWelcome to the classic game of Tic Tac Toe\n");
 
 		//prompt user to pick their piece
 		System.out.println("Do you want to play with X or O? ");
