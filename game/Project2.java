@@ -39,6 +39,9 @@ public class Project2
 				computerChar = "O";
 				
 				chooseMove(playingChar);
+				displayInitialTable();	
+				
+				System.out.println("Position: ");
 				charPosition = scan.next();
 			}
 			else if(userChar.equalsIgnoreCase("O"))
@@ -47,6 +50,9 @@ public class Project2
 				computerChar = "X";
 				
 				chooseMove(playingChar);
+				displayInitialTable();	
+				
+				System.out.println("Position: ");
 				charPosition = scan.next();
 			}
 			else
@@ -62,8 +68,6 @@ public class Project2
 	{
 		System.out.println("\nWhere would you like to place your " + charChoice + "?");
 		System.out.println("(choose position from the table displayed below. Example: A1) \n");
-		displayInitialTable();	
-		System.out.println("Position: ");
 	}
 	
 	public static void displayInitialTable()
