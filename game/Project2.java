@@ -10,7 +10,8 @@ public class Project2
 	public static void main(String[] args) 
 	{
 		char letter; //used for box input
-		String userChar, playingChar, computerChar, charPosition;
+		String userChar, computerChar, charPosition;
+		boolean available;
 
 		char[][] table = new char[][]{
 			{'?', '?', '?'},
@@ -19,7 +20,7 @@ public class Project2
 		};
 
 		//display table
-		displayTable(table);
+		//displayTable(table);
 
 		//Welcome message
 		System.out.println("\nWelcome to the classic game of Tic Tac Toe\n");
@@ -35,25 +36,11 @@ public class Project2
 				
 			if(userChar.equalsIgnoreCase("X"))
 			{
-				playingChar = "X";
 				computerChar = "O";
-				
-				chooseMove(playingChar);
-				displayInitialTable();	
-				
-				System.out.println("Position: ");
-				charPosition = scan.next();
 			}
 			else if(userChar.equalsIgnoreCase("O"))
 			{
-				playingChar = "O";
 				computerChar = "X";
-				
-				chooseMove(playingChar);
-				displayInitialTable();	
-				
-				System.out.println("Position: ");
-				charPosition = scan.next();
 			}
 			else
 			{
@@ -61,10 +48,31 @@ public class Project2
 			}
 					
 		} while(!(userChar.equalsIgnoreCase("X") || userChar.equalsIgnoreCase("O")));
-
+		
+		// choose position
+		do
+		{
+			chooseMovePrompt(userChar);
+			displayInitialTable();
+			System.out.println("Position: ");
+			charPosition = scan.next();
+			available = isSpaceAvailable(charPosition, userChar.charAt(0), table);
+			
+			// tell user the space is taken
+			/*if(!available)
+			{
+				System.out.println("Space is take. Try a different position.");
+			}*/
+			
+		} while(!(charPosition.equalsIgnoreCase("a1") || charPosition.equalsIgnoreCase("a2") || charPosition.equalsIgnoreCase("a3") ||
+				charPosition.equalsIgnoreCase("b1") || charPosition.equalsIgnoreCase("b2") || charPosition.equalsIgnoreCase("b3") ||
+				charPosition.equalsIgnoreCase("c1") || charPosition.equalsIgnoreCase("c2") || charPosition.equalsIgnoreCase("c3")));
+		
+		System.out.println("Wise choice (" + charPosition + ")");
+		
 	}
 	
-	public static void chooseMove(String charChoice)
+	public static void chooseMovePrompt(String charChoice)
 	{
 		System.out.println("\nWhere would you like to place your " + charChoice + "?");
 		System.out.println("(choose position from the table displayed below. Example: A1) \n");
@@ -85,10 +93,98 @@ public class Project2
 		System.out.println(table);
 	}
 
-	//IN PROGRESS
 	//checks if space is available
-	public static boolean isSpaceAvailable()
+	public static boolean isSpaceAvailable(String choice, char piece, char[][] box)
 	{
+		// uppercase  choice
+		choice.toUpperCase();
+		
+		switch(choice)
+		{
+		case "A1":
+			if(box[0][0] == '?')
+			{
+				box[0][0] = piece;
+				return true;
+			}
+			else
+				return false;
+			
+		case "A2":
+			if(box[0][1] == '?')
+			{
+				box[0][1] = piece;
+				return true;
+			}
+			else
+				return false;
+			
+		case "A3":
+			if(box[0][2] == '?')
+			{
+				box[0][2] = piece;
+				return true;
+			}
+			else
+				return false;
+			
+		case "B1":
+			if(box[1][0] == '?')
+			{
+				box[1][0] = piece;
+				return true;
+			}
+			else
+				return false;
+			
+		case "B2":
+			if(box[1][1] == '?')
+			{
+				box[1][1] = piece;
+				return true;
+			}
+			else
+				return false;
+			
+		case "B3":
+			if(box[1][2] == '?')
+			{
+				box[1][2] = piece;
+				return true;
+			}
+			else
+				return false;
+			
+		case "C1":
+			if(box[2][0] == '?')
+			{
+				box[2][0] = piece;
+				return true;
+			}
+			else
+				return false;
+			
+		case "C2":
+			if(box[2][1] == '?')
+			{
+				box[2][1] = piece;
+				return true;
+			}
+			else
+				return false;
+			
+		case "C3":
+			if(box[2][2] == '?')
+			{
+				box[2][2] = piece;
+				return true;
+			}
+			else
+				return false;
+		default:
+			//
+		}
+		
 		return false;
 	}
 
