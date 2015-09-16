@@ -7,18 +7,22 @@ public class Project2
 {
 	private static Scanner scan = new Scanner(System.in); //Scanner to be used in any method
 	
+	private static char[][] table = new char[][]{
+		{'?', '?', '?'},
+		{'?', '?', '?'},
+		{'?', '?', '?'}
+	};
+	
 	public static void main(String[] args) 
 	{
-		char letter; //used for box input
+		char letter; //used for table input
 		String userChar, computerChar, charPosition;
 		boolean available;
-
-		char[][] table = new char[][]{
-			{'?', '?', '?'},
-			{'?', '?', '?'},
-			{'?', '?', '?'}
-		};
-
+		boolean winner = false;
+		boolean tie = false;
+		int turns = 0; //counter
+		
+		
 		//display table
 		//displayTable(table);
 
@@ -49,26 +53,43 @@ public class Project2
 					
 		} while(!(userChar.equalsIgnoreCase("X") || userChar.equalsIgnoreCase("O")));
 		
-		// choose position
-		do
-		{
-			chooseMovePrompt(userChar);
-			displayInitialTable();
-			System.out.println("Position: ");
-			charPosition = scan.next();
-			available = isSpaceAvailable(charPosition, userChar.charAt(0), table);
-			
-			// tell user the space is taken
-			/*if(!available)
+		do{
+			// choose position
+			do
 			{
-				System.out.println("Space is take. Try a different position.");
-			}*/
+				chooseMovePrompt(userChar);
+				displayInitialTable();
+				System.out.println("Position: ");
+				charPosition = scan.next();
+				available = isSpaceAvailable(charPosition, userChar.charAt(0));
+				
+				// tell user the space is taken
+				if(!available)
+				{
+					System.out.println("Space is taken. Try a different position.");
+				}
+				
+				//System.out.println("\nNow it's the computer's move\n");
+				
+			} while(!(charPosition.equalsIgnoreCase("a1") || charPosition.equalsIgnoreCase("a2") || charPosition.equalsIgnoreCase("a3") ||
+					charPosition.equalsIgnoreCase("b1") || charPosition.equalsIgnoreCase("b2") || charPosition.equalsIgnoreCase("b3") ||
+					charPosition.equalsIgnoreCase("c1") || charPosition.equalsIgnoreCase("c2") || charPosition.equalsIgnoreCase("c3")) || !available);
 			
-		} while(!(charPosition.equalsIgnoreCase("a1") || charPosition.equalsIgnoreCase("a2") || charPosition.equalsIgnoreCase("a3") ||
-				charPosition.equalsIgnoreCase("b1") || charPosition.equalsIgnoreCase("b2") || charPosition.equalsIgnoreCase("b3") ||
-				charPosition.equalsIgnoreCase("c1") || charPosition.equalsIgnoreCase("c2") || charPosition.equalsIgnoreCase("c3")));
+			System.out.println("\nNow it's the computer's move\n");
+			
+			//computer's move
+			
+			displayTable();
+			
+		} while(!winner && !tie);
+	} //main
+	
+	public static void computerMove(char compChoice)
+	{
+		// get list of available spaces
 		
-		System.out.println("Wise choice (" + charPosition + ")");
+		
+		// pick and assign one from the list, randomly
 		
 	}
 	
@@ -80,7 +101,7 @@ public class Project2
 	
 	public static void displayInitialTable()
 	{
-		//sample table. (Update: include letter in table)  --> Alex displayTable(char box[][])!
+		//sample table. (Update: include letter in table)  --> Alex displayTable(char table[][])!
 		String row1 = "     1     2     3   \n";
 		String row2 = "A |     |     |     |\n";
 		String row3 = "B |     |     |     |\n";
@@ -94,89 +115,89 @@ public class Project2
 	}
 
 	//checks if space is available
-	public static boolean isSpaceAvailable(String choice, char piece, char[][] box)
+	public static boolean isSpaceAvailable(String choice, char piece)
 	{
-		// uppercase  choice
-		choice.toUpperCase();
+		// capitalize choice
+		choice = choice.toUpperCase();
 		
 		switch(choice)
 		{
 		case "A1":
-			if(box[0][0] == '?')
+			if(table[0][0] == '?')
 			{
-				box[0][0] = piece;
+				table[0][0] = piece;
 				return true;
 			}
 			else
 				return false;
 			
 		case "A2":
-			if(box[0][1] == '?')
+			if(table[0][1] == '?')
 			{
-				box[0][1] = piece;
+				table[0][1] = piece;
 				return true;
 			}
 			else
 				return false;
 			
 		case "A3":
-			if(box[0][2] == '?')
+			if(table[0][2] == '?')
 			{
-				box[0][2] = piece;
+				table[0][2] = piece;
 				return true;
 			}
 			else
 				return false;
 			
 		case "B1":
-			if(box[1][0] == '?')
+			if(table[1][0] == '?')
 			{
-				box[1][0] = piece;
+				table[1][0] = piece;
 				return true;
 			}
 			else
 				return false;
 			
 		case "B2":
-			if(box[1][1] == '?')
+			if(table[1][1] == '?')
 			{
-				box[1][1] = piece;
+				table[1][1] = piece;
 				return true;
 			}
 			else
 				return false;
 			
 		case "B3":
-			if(box[1][2] == '?')
+			if(table[1][2] == '?')
 			{
-				box[1][2] = piece;
+				table[1][2] = piece;
 				return true;
 			}
 			else
 				return false;
 			
 		case "C1":
-			if(box[2][0] == '?')
+			if(table[2][0] == '?')
 			{
-				box[2][0] = piece;
+				table[2][0] = piece;
 				return true;
 			}
 			else
 				return false;
 			
 		case "C2":
-			if(box[2][1] == '?')
+			if(table[2][1] == '?')
 			{
-				box[2][1] = piece;
+				table[2][1] = piece;
 				return true;
 			}
 			else
 				return false;
 			
 		case "C3":
-			if(box[2][2] == '?')
+			if(table[2][2] == '?')
 			{
-				box[2][2] = piece;
+				table[2][2] = piece;
 				return true;
 			}
 			else
@@ -189,13 +210,13 @@ public class Project2
 	}
 
 	//display formatted table
-	public static void displayTable(char box[][])
+	public static void displayTable()
 	{
 		System.out.println("  1 2 3");
-		System.out.println( "A " + box[0][0] + "|" + box[0][1] + "|" + box[0][2]);
+		System.out.println( "A " + table[0][0] + "|" + table[0][1] + "|" + table[0][2]);
 		System.out.println( "-------");
-		System.out.println( "B " + box[1][0] + "|" + box[1][1] + "|" + box[1][2]);
+		System.out.println( "B " + table[1][0] + "|" + table[1][1] + "|" + table[1][2]);
 		System.out.println( "-------");
-		System.out.println( "C " + box[2][0] + "|" + box[2][1] + "|" + box[2][2]);
+		System.out.println( "C " + table[2][0] + "|" + table[2][1] + "|" + table[2][2]);
 	}
 }
