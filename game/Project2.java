@@ -1,7 +1,9 @@
 package game;
 
 import java.io.*;
+import java.util.List;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Project2 
 {
@@ -13,19 +15,26 @@ public class Project2
 		{'?', '?', '?'}
 	};
 	
+	private static List availableMoves = new ArrayList();
+	{ availableMoves.add('?'); //0
+	  availableMoves.add('?'); //1
+	  availableMoves.add('?'); //2
+	  availableMoves.add('?');
+	  availableMoves.add('?');
+	  availableMoves.add('?');
+	  availableMoves.add('?');
+	  availableMoves.add('?');
+	  availableMoves.add('?');
+	}
+	
 	public static void main(String[] args) 
 	{
-		char letter; //used for table input
 		String userChar, computerChar, charPosition;
 		boolean available;
 		boolean winner = false;
 		boolean tie = false;
 		int turns = 0; //counter
 		
-		
-		//display table
-		//displayTable(table);
-
 		//Welcome message
 		System.out.println("\nWelcome to the classic game of Tic Tac Toe\n");
 
@@ -46,9 +55,9 @@ public class Project2
 			{
 				computerChar = "X";
 			}
-			else
+			else //invalid input
 			{
-				System.out.println("You have entered an invalid letter. Please select either X or O: ");
+				System.out.println("\nYou have entered an invalid letter. Please select either X or O: ");
 			}
 					
 		} while(!(userChar.equalsIgnoreCase("X") || userChar.equalsIgnoreCase("O")));
@@ -58,19 +67,28 @@ public class Project2
 			do
 			{
 				chooseMovePrompt(userChar);
-				displayInitialTable();
+				displayTable();
+				
 				System.out.println("Position: ");
 				charPosition = scan.next();
+				
 				available = isSpaceAvailable(charPosition, userChar.charAt(0));
 				
-				// tell user the space is taken
-				if(!available)
+				//check user entered valid position
+				if(!(charPosition.equalsIgnoreCase("a1") || charPosition.equalsIgnoreCase("a2") || charPosition.equalsIgnoreCase("a3") ||
+					charPosition.equalsIgnoreCase("b1") || charPosition.equalsIgnoreCase("b2") || charPosition.equalsIgnoreCase("b3") ||
+					charPosition.equalsIgnoreCase("c1") || charPosition.equalsIgnoreCase("c2") || charPosition.equalsIgnoreCase("c3")))
 				{
-					System.out.println("Space is taken. Try a different position.");
+					System.out.println("\nThat is not a valid position, please select again.");
 				}
-				
-				//System.out.println("\nNow it's the computer's move\n");
-				
+				else
+				{	
+					// tell user the space is taken
+					if(!available)
+					{
+						System.out.println("\nSpace is taken. Try a different position.");
+					}
+				}
 			} while(!(charPosition.equalsIgnoreCase("a1") || charPosition.equalsIgnoreCase("a2") || charPosition.equalsIgnoreCase("a3") ||
 					charPosition.equalsIgnoreCase("b1") || charPosition.equalsIgnoreCase("b2") || charPosition.equalsIgnoreCase("b3") ||
 					charPosition.equalsIgnoreCase("c1") || charPosition.equalsIgnoreCase("c2") || charPosition.equalsIgnoreCase("c3")) || !available);
@@ -79,10 +97,11 @@ public class Project2
 			
 			//computer's move
 			
-			displayTable();
+			//displayTable();
 			
 		} while(!winner && !tie);
-	} //main
+	} //end of main
+	
 	
 	public static void computerMove(char compChoice)
 	{
@@ -96,16 +115,15 @@ public class Project2
 	public static void chooseMovePrompt(String charChoice)
 	{
 		System.out.println("\nWhere would you like to place your " + charChoice + "?");
-		System.out.println("(choose position from the table displayed below. Example: A1) \n");
+		System.out.println("(choose position from the table displayed below. Example: A1)\n");
 	}
 	
-	public static void displayInitialTable()
+	public static void displayTable()
 	{
-		//sample table. (Update: include letter in table)  --> Alex displayTable(char table[][])!
 		String row1 = "     1     2     3   \n";
-		String row2 = "A |     |     |     |\n";
-		String row3 = "B |     |     |     |\n";
-		String row4 = "C |     |     |     |\n";
+		String row2 = "A |  " + table[0][0] +   "  |  " + table[0][1] + "  |  " + table[0][2] + "  |\n";
+		String row3 = "B |  " + table[1][0] +   "  |  " + table[1][1] + "  |  " + table[1][2] + "  |\n";
+		String row4 = "C |  " + table[2][0] +   "  |  " + table[2][1] + "  |  " + table[2][2] + "  |\n";
 		String rowB = "  ------------------- \n";
 		
 		String table = row1 + rowB + row2 + rowB + row3 + rowB + row4 + rowB;
@@ -114,13 +132,13 @@ public class Project2
 		System.out.println(table);
 	}
 
-	//checks if space is available
-	public static boolean isSpaceAvailable(String choice, char piece)
+	//checks if space is available & updates the table
+	public static boolean isSpaceAvailable(String position, char piece)
 	{
 		// capitalize choice
-		choice = choice.toUpperCase();
+		position = position.toUpperCase();
 		
-		switch(choice)
+		switch(position)
 		{
 		case "A1":
 			if(table[0][0] == '?')
@@ -209,14 +227,4 @@ public class Project2
 		return false;
 	}
 
-	//display formatted table
-	public static void displayTable()
-	{
-		System.out.println("  1 2 3");
-		System.out.println( "A " + table[0][0] + "|" + table[0][1] + "|" + table[0][2]);
-		System.out.println( "-------");
-		System.out.println( "B " + table[1][0] + "|" + table[1][1] + "|" + table[1][2]);
-		System.out.println( "-------");
-		System.out.println( "C " + table[2][0] + "|" + table[2][1] + "|" + table[2][2]);
-	}
 }
