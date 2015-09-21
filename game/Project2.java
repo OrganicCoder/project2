@@ -4,10 +4,13 @@ import java.io.*;
 import java.util.List;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Project2 
 {
 	private static Scanner scan = new Scanner(System.in); //Scanner to be used in any method
+	
+	private static Random random = new Random();
 	
 	private static char[][] table = new char[][]{
 		{'?', '?', '?'},
@@ -15,21 +18,12 @@ public class Project2
 		{'?', '?', '?'}
 	};
 	
-	private static List availableMoves = new ArrayList();
-	{ availableMoves.add('?'); //0
-	  availableMoves.add('?'); //1
-	  availableMoves.add('?'); //2
-	  availableMoves.add('?');
-	  availableMoves.add('?');
-	  availableMoves.add('?');
-	  availableMoves.add('?');
-	  availableMoves.add('?');
-	  availableMoves.add('?');
-	}
+
 	
 	public static void main(String[] args) 
 	{
-		String userChar, computerChar, charPosition;
+		String userChar, charPosition;
+		char computerChar = ' ';
 		boolean available;
 		boolean winner = false;
 		boolean tie = false;
@@ -49,11 +43,11 @@ public class Project2
 				
 			if(userChar.equalsIgnoreCase("X"))
 			{
-				computerChar = "O";
+				computerChar = 'O';
 			}
 			else if(userChar.equalsIgnoreCase("O"))
 			{
-				computerChar = "X";
+				computerChar = 'X';
 			}
 			else //invalid input
 			{
@@ -95,9 +89,10 @@ public class Project2
 			
 			System.out.println("\nNow it's the computer's move\n");
 			
-			//computer's move
+			//add sleep method for computer's move to simulate thinking
 			
-			//displayTable();
+			//computer's move
+			computerMove(computerChar);
 			
 		} while(!winner && !tie);
 	} //end of main
@@ -106,10 +101,88 @@ public class Project2
 	public static void computerMove(char compChoice)
 	{
 		// get list of available spaces
+		List<String> availableMoves = new ArrayList<String>();
 		
+		if(table[0][0] == '?')
+		{
+			availableMoves.add("a1"); //0
+		}
+		if(table[0][1] == '?')
+		{
+			availableMoves.add("a2"); //1
+		}
+		if(table[0][2] == '?')
+		{
+			availableMoves.add("a3"); //2
+		}
+		if(table[1][0] == '?')
+		{
+			availableMoves.add("b1"); //3
+		}
+		if(table[1][1] == '?')
+		{
+			availableMoves.add("b2"); //4
+		}
+		if(table[1][2] == '?')
+		{
+			availableMoves.add("b3"); //5
+		}
+		if(table[2][0] == '?')
+		{
+			availableMoves.add("c1"); //6
+		}
+		if(table[2][1] == '?')
+		{
+			availableMoves.add("c2"); //7
+		}
+		if(table[2][2] == '?')
+		{
+			availableMoves.add("c3"); //8
+		}
 		
-		// pick and assign one from the list, randomly
+		//choose random index from list
+		int index = random.nextInt(availableMoves.size()-1);
 		
+		//get computer position
+		String listContent = availableMoves.get(index);
+		
+		//decide computer's move
+		if(listContent.equals("a1"))
+		{
+			table[0][0] = compChoice;
+		}
+		else if(listContent.equals("a2"))
+		{
+			table[0][1] = compChoice;
+		}
+		else if(listContent.equals("a3"))
+		{
+			table[0][2] = compChoice;
+		}
+		else if(listContent.equals("b1"))
+		{
+			table[1][0] = compChoice;
+		}
+		else if(listContent.equals("b2"))
+		{
+			table[1][1] = compChoice;
+		}
+		else if(listContent.equals("b3"))
+		{
+			table[1][2] = compChoice;
+		}
+		else if(listContent.equals("c1"))
+		{
+			table[2][0] = compChoice;
+		}
+		else if(listContent.equals("c2"))
+		{
+			table[2][1] = compChoice;
+		}
+		else if(listContent.equals("c3"))
+		{
+			table[2][2] = compChoice;
+		}
 	}
 	
 	public static void chooseMovePrompt(String charChoice)
