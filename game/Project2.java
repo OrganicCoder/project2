@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class Project2 
 {
@@ -56,6 +57,7 @@ public class Project2
 					
 		} while(!(userChar.equalsIgnoreCase("X") || userChar.equalsIgnoreCase("O")));
 		
+		// game loop
 		do{
 			// choose position
 			do
@@ -65,6 +67,7 @@ public class Project2
 				
 				System.out.println("Position: ");
 				charPosition = scan.next();
+				System.out.println();
 				
 				available = isSpaceAvailable(charPosition, userChar.charAt(0));
 				
@@ -83,20 +86,103 @@ public class Project2
 						System.out.println("\nSpace is taken. Try a different position.");
 					}
 				}
+				
+				displayTable();
+				
 			} while(!(charPosition.equalsIgnoreCase("a1") || charPosition.equalsIgnoreCase("a2") || charPosition.equalsIgnoreCase("a3") ||
 					charPosition.equalsIgnoreCase("b1") || charPosition.equalsIgnoreCase("b2") || charPosition.equalsIgnoreCase("b3") ||
 					charPosition.equalsIgnoreCase("c1") || charPosition.equalsIgnoreCase("c2") || charPosition.equalsIgnoreCase("c3")) || !available);
 			
-			System.out.println("\nNow it's the computer's move\n");
+			char winningPlayer = ' ';
+			winningPlayer = checkWinner();
 			
-			//add sleep method for computer's move to simulate thinking
+			if(winningPlayer == 'o' || winningPlayer == 'x' ||
+			   winningPlayer == 'O' || winningPlayer == 'X')
+			{
+				winner = true;
+				System.out.println("Player " + winningPlayer + " won!");
+			}
 			
-			//computer's move
-			computerMove(computerChar);
+			//if not winner allow computer to move
+			if(!winner)
+			{
+				System.out.println("\nNow it's the computer's move\n");
+				
+				//add sleep method for computer's move to simulate thinking
+				try {
+					int time = random.nextInt(3) + 2;
+				    TimeUnit.SECONDS.sleep(time);
+				} catch (InterruptedException e) {
+				    //Handle exception
+					System.out.println("The computer's brain shut off :(");
+				}
+				
+				//computer's move
+				computerMove(computerChar);
+				
+				//checkWinner();
+			}
 			
 		} while(!winner && !tie);
 	} //end of main
 	
+	public static char checkWinner()
+	{
+		//a1
+		if(table[0][0] != '?')
+		{
+			if(table[0][0] == table[0][1] && table[0][1] == table[0][2])
+			{
+				return table[0][0];
+			}
+			else if(table[0][0] == table[1][1] && table[1][1] == table[2][2])
+			{
+				return table[0][0];
+			}
+			else if(table[0][0] == table[1][0] && table[1][0] == table[2][0])
+			{
+				return table[0][0];
+			}
+			else
+				return ' ';
+		}
+		
+		//b2
+		else if(table[1][1] != '?')
+		{
+			if(table[0][2] == table[1][1] && table[1][1] == table[2][0])
+			{
+				return table[0][2];
+			}
+			else if(table[1][0] == table[1][1] && table[1][1] == table[1][2])
+			{
+				return table[1][0];
+			}
+			else if(table[0][1] == table[1][1] && table[1][1] == table[2][1])
+			{
+				return table[0][1];
+			}
+			else
+				return ' ';
+		}
+		
+		//c3
+		else if(table[2][2] != '?')
+		{
+			if(table[2][0] == table[2][1] && table[2][1] == table[2][2])
+			{
+				return table[2][0];
+			}
+			else if(table[0][2] == table[1][2] && table[1][2] == table[2][2])
+			{
+				return table[0][2];
+			}
+			else
+				return ' ';
+		}
+		else
+			return ' ';
+	}
 	
 	public static void computerMove(char compChoice)
 	{
@@ -210,6 +296,9 @@ public class Project2
 	{
 		// capitalize choice
 		position = position.toUpperCase();
+		String pi = piece + "";
+		pi = pi.toUpperCase();
+		piece = pi.charAt(0);
 		
 		switch(position)
 		{
