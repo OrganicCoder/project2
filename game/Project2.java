@@ -32,7 +32,7 @@ public class Project2
 		
 		//Welcome message
 		System.out.println("\nWelcome to the classic game of Tic Tac Toe\n");
-
+		
 		//prompt user to pick their piece
 		System.out.println("Do you want to play with X or O? ");
 
@@ -109,16 +109,21 @@ public class Project2
 				System.out.println("\nNow it's the computer's move\n");
 				
 				//add sleep method for computer's move to simulate thinking
-				try {
-					int time = random.nextInt(3) + 2;
-				    TimeUnit.SECONDS.sleep(time);
-				} catch (InterruptedException e) {
+				try 
+				{
+					int time = random.nextInt(3) + 2; //choose random time between 0-5 seconds
+				    TimeUnit.SECONDS.sleep(time); //pause for that amount of time
+				} 
+				catch (InterruptedException e) 
+				{
 				    //Handle exception
 					System.out.println("The computer's brain shut off :(");
 				}
 				
 				//computer's move
 				computerMove(computerChar);
+				
+				displayTable();
 				
 				//checkWinner();
 			}
@@ -148,7 +153,7 @@ public class Project2
 		}
 		
 		//b2
-		else if(table[1][1] != '?')
+		else if(table[1][1] != '?' || table[0][1] != '?' || table[2][1] != '?')
 		{
 			if(table[0][2] == table[1][1] && table[1][1] == table[2][0])
 			{
@@ -167,6 +172,7 @@ public class Project2
 		}
 		
 		//c3
+		// || table[2][1] != '?' || table[2][0] != '?'
 		else if(table[2][2] != '?')
 		{
 			if(table[2][0] == table[2][1] && table[2][1] == table[2][2])
