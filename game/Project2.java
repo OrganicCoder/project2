@@ -18,7 +18,6 @@ public class Project2
 		{'?', '?', '?'},
 		{'?', '?', '?'}
 	};
-	
 
 	
 	public static void main(String[] args) 
@@ -103,7 +102,7 @@ public class Project2
 				System.out.println("Player " + winningPlayer + " won!");
 			}
 			
-			//if not winner allow computer to move
+			//if not winner, allow computer to move
 			if(!winner)
 			{
 				System.out.println("\nNow it's the computer's move\n");
@@ -124,7 +123,6 @@ public class Project2
 				computerMove(computerChar);
 				
 				displayTable();
-				
 				//checkWinner();
 			}
 			
@@ -133,6 +131,16 @@ public class Project2
 	
 	public static char checkWinner()
 	{
+		//it's checking both X and O, so if this is the sequence of play:
+		//player   = a2
+		//computer = a1
+		//player   = b2
+		//computer = c3
+		//player   = c2 (and hence a winning condition!)
+		//Program first checks if a1 is not a '?', which it says "Ya it's not"
+		//Program then goes through only that FIRST if statement, and returns ' '! ...
+		//Conclusion: needs adjustment
+		
 		//a1
 		if(table[0][0] != '?')
 		{
@@ -153,35 +161,34 @@ public class Project2
 		}
 		
 		//b2
-		else if(table[1][1] != '?' || table[0][1] != '?' || table[2][1] != '?')
+		else if(table[1][1] != '?')
 		{
-			if(table[0][2] == table[1][1] && table[1][1] == table[2][0])
+			if(table[1][1] == table[0][2] && table[0][2] == table[2][0])
 			{
-				return table[0][2];
+				return table[1][1];
 			}
-			else if(table[1][0] == table[1][1] && table[1][1] == table[1][2])
+			else if(table[1][1] == table[1][0] && table[1][0] == table[1][2])
 			{
-				return table[1][0];
+				return table[1][1];
 			}
-			else if(table[0][1] == table[1][1] && table[1][1] == table[2][1])
+			else if(table[1][1] == table[0][1] && table[0][1] == table[2][1])
 			{
-				return table[0][1];
+				return table[1][1];
 			}
 			else
 				return ' ';
 		}
 		
 		//c3
-		// || table[2][1] != '?' || table[2][0] != '?'
 		else if(table[2][2] != '?')
 		{
-			if(table[2][0] == table[2][1] && table[2][1] == table[2][2])
+			if(table[2][2] == table[2][1] && table[2][1] == table[2][0])
 			{
-				return table[2][0];
+				return table[2][2];
 			}
-			else if(table[0][2] == table[1][2] && table[1][2] == table[2][2])
+			else if(table[2][2] == table[1][2] && table[1][2] == table[0][2])
 			{
-				return table[0][2];
+				return table[2][2];
 			}
 			else
 				return ' ';
