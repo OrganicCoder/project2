@@ -92,6 +92,8 @@ public class Project2
 					charPosition.equalsIgnoreCase("b1") || charPosition.equalsIgnoreCase("b2") || charPosition.equalsIgnoreCase("b3") ||
 					charPosition.equalsIgnoreCase("c1") || charPosition.equalsIgnoreCase("c2") || charPosition.equalsIgnoreCase("c3")) || !available);
 			
+			turns++;
+			
 			char winningPlayer = ' ';
 			winningPlayer = checkWinner();
 			
@@ -103,7 +105,7 @@ public class Project2
 			}
 			
 			//if not winner, allow computer to move
-			if(!winner)
+			if(!winner && turns <= 9)
 			{
 				System.out.println("\nNow it's the computer's move\n");
 				
@@ -123,24 +125,30 @@ public class Project2
 				computerMove(computerChar);
 				
 				displayTable();
-				//checkWinner();
+				
+				turns++;
+				
+				winningPlayer = checkWinner();
+				if(winningPlayer == 'o' || winningPlayer == 'x' ||
+				   winningPlayer == 'O' || winningPlayer == 'X')
+				{
+					winner = true;
+					System.out.println("Player " + winningPlayer + " won!");
+				}
+				
+			}
+			//tie condition
+			else
+			{
+				System.out.println("It's a TIE!");
+				tie = true;
 			}
 			
-		} while(!winner && !tie);
+		} while(!winner);
 	} //end of main
 	
 	public static char checkWinner()
 	{
-		//it's checking both X and O, so if this is the sequence of play:
-		//player   = a2
-		//computer = a1
-		//player   = b2
-		//computer = c3
-		//player   = c2 (and hence a winning condition!)
-		//Program first checks if a1 is not a '?', which it says "Ya it's not"
-		//Program then goes through only that FIRST if statement, and returns ' '! ...
-		//Conclusion: needs adjustment
-		
 		//a1
 		if(table[0][0] != '?')
 		{
@@ -148,20 +156,18 @@ public class Project2
 			{
 				return table[0][0];
 			}
-			else if(table[0][0] == table[1][1] && table[1][1] == table[2][2])
+			if(table[0][0] == table[1][1] && table[1][1] == table[2][2])
 			{
 				return table[0][0];
 			}
-			else if(table[0][0] == table[1][0] && table[1][0] == table[2][0])
+			if(table[0][0] == table[1][0] && table[1][0] == table[2][0])
 			{
 				return table[0][0];
 			}
-			else
-				return ' ';
 		}
 		
 		//b2
-		else if(table[1][1] != '?')
+		if(table[1][1] != '?')
 		{
 			if(table[1][1] == table[0][2] && table[0][2] == table[2][0])
 			{
@@ -175,12 +181,10 @@ public class Project2
 			{
 				return table[1][1];
 			}
-			else
-				return ' ';
 		}
 		
 		//c3
-		else if(table[2][2] != '?')
+		if(table[2][2] != '?')
 		{
 			if(table[2][2] == table[2][1] && table[2][1] == table[2][0])
 			{
@@ -190,11 +194,10 @@ public class Project2
 			{
 				return table[2][2];
 			}
-			else
-				return ' ';
 		}
-		else
-			return ' ';
+		
+		//catch all
+		return ' ';
 	}
 	
 	public static void computerMove(char compChoice)
