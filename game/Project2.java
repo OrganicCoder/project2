@@ -20,72 +20,75 @@ public class Project2
 	
 	public static void main(String[] args) 
 	{
-		String userChar = "";
-		String charPosition = "";
+		char userChar = ' ';
 		char computerChar = ' ';
-		boolean available = false;
+		char playAgain = ' ';
+		String charPosition = "";
+		boolean positionAvailable = false;
 		boolean winner = false;
 		boolean tie = false;
+		int gameMode = 0;
 		int turnCounter = 0;
 		
 		//Welcome message
-		System.out.println("\nWelcome to the classic game of Tic Tac Toe\n");
+		System.out.println("\nWelcome to the classic game of Tic Tac Toe");
 		
-		//prompt user to pick their piece
-		System.out.println("Do you want to play with X or O? ");
-
-		//validate the user's choice input
-		String playerChoices = playerPick();
-		
-		//player character is first char of playerChoices string. computer character is second char.
-		userChar = playerChoices.charAt(0) + "";
-		computerChar = playerChoices.charAt(1);
-		
-		//game loop
+		// start the game loop
 		do{
-			//choose a valid position
-			choosePosition(userChar, charPosition, available);
+		
+			//reset all variables
+			userChar = ' ';
+			computerChar = ' ';
+			playAgain = ' ';
+			charPosition = "";
+			positionAvailable = false;
+			winner = false;
+			tie = false;
+			turnCounter = 0;
+			table = new char[][]{
+				{'?', '?', '?'},
+				{'?', '?', '?'},
+				{'?', '?', '?'}
+			};
 			
-			turnCounter++;
-			
-			char winningPlayer = ' ';
-			winningPlayer = checkWinner();
-
-			//check if player has won
-			if(winningPlayer == 'o' || winningPlayer == 'x' ||
-			   winningPlayer == 'O' || winningPlayer == 'X')
+			//prompt user to choose game mode
+			System.out.println("Choose game mode (either 1 or 2):\n 1. Player vs. Player \n 2. Player vs. Computer\n");
+			gameMode = scan.nextInt();
+		/*	
+			if(modeChoice == 1)
 			{
-				winner = true;
-				System.out.println("Player " + winningPlayer + " won!");
+				//go to pvp mode
 			}
-			
-			//if no winner, allow computer to move
-			if(!winner && turnCounter < 9)
+			else if(modeChoice == 2)
 			{
-				System.out.println("\nNow it's the computer's move\n");
-				
-				//sleep method for computer's move to simulate thinking
-				try 
-				{
-					int time = random.nextInt(3) + 2; //chooses random time between 2-5 seconds
-				    TimeUnit.SECONDS.sleep(time); //pauses for that amount of time
-				} 
-				catch (InterruptedException e) 
-				{
-				    //Handle exception
-					System.out.println("The computer's brain shut off :(");
-				}
-				
-				//computer's move
-				computerMove(computerChar);
-				
-				displayTable();
+				//go to comp mode
+			}
+			else
+			{
+				System.out.println("Please choose a valid game mode: ");
+			}
+		*/
+			//prompt user to pick their piece
+			System.out.println("\nDo you want to play with X or O? ");
+	
+			//validate the user's choice input
+			String playerChoices = playerPick();
+			
+			//player character is first char of playerChoices string. computer character is second char.
+			userChar = playerChoices.charAt(0);
+			computerChar = playerChoices.charAt(1);
+			
+			//game loop
+			do{
+				//choose a valid position
+				choosePosition(userChar, charPosition, positionAvailable);
 				
 				turnCounter++;
 				
+				char winningPlayer = ' ';
 				winningPlayer = checkWinner();
-				
-				//check if computer has won
+	
+				//check if player has won
 				if(winningPlayer == 'o' || winningPlayer == 'x' ||
 				   winningPlayer == 'O' || winningPlayer == 'X')
 				{
@@ -93,19 +96,58 @@ public class Project2
 					System.out.println("Player " + winningPlayer + " won!");
 				}
 				
-			}
+				//if no winner, allow computer to move
+				if(!winner && turnCounter < 9)
+				{
+					System.out.println("\nNow it's the computer's move\n");
+					
+					//sleep method for computer's move to simulate thinking
+					try 
+					{
+						int time = random.nextInt(3) + 2; //chooses random time between 2-5 seconds
+					    TimeUnit.SECONDS.sleep(time); //pauses for that amount of time
+					} 
+					catch (InterruptedException e) 
+					{
+					    //Handle exception
+						System.out.println("The computer's brain shut off :(");
+					}
+					
+					//computer's move
+					computerMove(computerChar);
+					
+					displayTable();
+					
+					turnCounter++;
+					
+					winningPlayer = checkWinner();
+					
+					//check if computer has won
+					if(winningPlayer == 'o' || winningPlayer == 'x' ||
+					   winningPlayer == 'O' || winningPlayer == 'X')
+					{
+						winner = true;
+						System.out.println("Player " + winningPlayer + " won!");
+					}
+					
+				}
+				
+				//check for tie condition
+				else if(!winner && turnCounter == 9)
+				{
+					System.out.println("It's a TIE!");
+					tie = true;
+				}
+				
+			  //while game is still playable
+			} while(!winner && !tie && turnCounter <=9);
 			
-			//check for tie condition
-			else if(!winner && turnCounter == 9)
-			{
-				System.out.println("It's a TIE!");
-				tie = true;
-			}
+			System.out.println("\nGame Over!\n\nPlay Again? (Y/N)");
+			playAgain = (scan.next()).charAt(0);
 			
-		  //while game is still playable
-		} while(!winner && !tie && turnCounter <=9);
+		} while(playAgain == 'y' || playAgain == 'Y');
 		
-		System.out.println("Game Over! Go play another game!");
+		System.out.println("\nThanks for playing!");
 	} //end of main
 	
 	public static String playerPick()
@@ -140,13 +182,13 @@ public class Project2
 		return choices;
 	}
 	
-	public static void chooseMovePrompt(String charChoice)
+	public static void chooseMovePrompt(char charChoice)
 	{
 		System.out.println("\nWhere would you like to place your " + charChoice + "?");
 		System.out.println("(choose position from the table displayed below. Example: A1)\n");
 	}
 	
-	public static void choosePosition(String userChar, String charPosition, boolean available)
+	public static void choosePosition(char userChar, String charPosition, boolean available)
 	{
 		do
 		{
@@ -157,7 +199,7 @@ public class Project2
 			charPosition = scan.next();
 			System.out.println();
 			
-			available = isSpaceAvailable(charPosition, userChar.charAt(0));
+			available = isSpaceAvailable(charPosition, userChar);
 			
 			//check user entered valid position
 			if(!(charPosition.equalsIgnoreCase("a1") || charPosition.equalsIgnoreCase("a2") || charPosition.equalsIgnoreCase("a3") ||
@@ -332,7 +374,6 @@ public class Project2
 		return ' ';
 	}
 		
-
 	public static void computerMove(char compChoice)
 	{
 		// get list of available spaces
@@ -420,7 +461,6 @@ public class Project2
 		}
 	}	
 
-	
 	public static void displayTable()
 	{
 		String row1 = "     1     2     3   \n";
